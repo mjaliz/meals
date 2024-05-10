@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-enum Filters {
+enum Filter {
   glutenFree,
   lactoseFree,
   vegetarian,
@@ -9,7 +9,12 @@ enum Filters {
 }
 
 class FilterScreen extends StatefulWidget {
-  const FilterScreen({super.key});
+  const FilterScreen({
+    super.key,
+    required this.currentFilters,
+  });
+
+  final Map<Filter, bool> currentFilters;
 
   @override
   State<FilterScreen> createState() {
@@ -24,6 +29,15 @@ class _FilterScreenState extends State<FilterScreen> {
   var _veganFilterSet = false;
 
   @override
+  void initState() {
+    super.initState();
+    _glutenFreeFilterSet = widget.currentFilters[Filter.glutenFree]!;
+    _lactoseFreeFilterSet = widget.currentFilters[Filter.lactoseFree]!;
+    _vegetarianFilterSet = widget.currentFilters[Filter.vegetarian]!;
+    _veganFilterSet = widget.currentFilters[Filter.vegan]!;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -34,10 +48,10 @@ class _FilterScreenState extends State<FilterScreen> {
         onPopInvoked: (didPop) async {
           if (didPop) return;
           Navigator.of(context).pop({
-            Filters.glutenFree: _glutenFreeFilterSet,
-            Filters.lactoseFree: _lactoseFreeFilterSet,
-            Filters.vegetarian: _vegetarianFilterSet,
-            Filters.vegan: _veganFilterSet
+            Filter.glutenFree: _glutenFreeFilterSet,
+            Filter.lactoseFree: _lactoseFreeFilterSet,
+            Filter.vegetarian: _vegetarianFilterSet,
+            Filter.vegan: _veganFilterSet
           });
         },
         child: Column(
